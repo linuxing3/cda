@@ -1,6 +1,7 @@
 package cda
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -21,8 +22,8 @@ type Course struct {
 
 var (
 	CdaBaseURL              = "https://e-cda.cn"
-	Username                = viper.GetString("config.user.username")
-	Password                = viper.GetString("config.user.password")
+	Username                = ""
+	Password                = ""
 	CdaLoginFormLoginBtn    = "form > input.login_btn "
 	CdaCourseRow            = "#module_0  .hoz_course_row"  // rows
 	CdaCourseSelector       = "h2.hoz_course_name  a"       // course name
@@ -33,6 +34,12 @@ var (
 
 // LoginCda 登录
 func LoginCda(host string) chromedp.Tasks {
+	Username = viper.GetString("config.user.username")
+	Password = viper.GetString("config.user.password")
+	fmt.Println("Username")
+	fmt.Println(Username)
+	fmt.Println("Password")
+	fmt.Println(Password)
 	return chromedp.Tasks{
 		chromedp.Navigate(host),
 		chromedp.WaitVisible(`.banner_btn`, chromedp.NodeVisible),
