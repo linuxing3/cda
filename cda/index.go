@@ -4,9 +4,7 @@ package cda
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"time"
 
@@ -37,18 +35,6 @@ func StartCrawlCda() {
 	fmt.Println("获取课程具体信息")
 	courses := GetCdaCoursesWithDetails(htmlContent)
 
-	data, _ := json.MarshalIndent(courses, "", " ")
-	if err = ioutil.WriteFile("courses.json", data, 0644); err != nil {
-		fmt.Println(err)
-	}
+	WriteCourseListFile(courses)
 
-}
-
-// PrintCourseListFile 读取课程列表文件
-func PrintCourseListFile(path string) {
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		fmt.Println("读取文件失败")
-	}
-	fmt.Println(string(data))
 }

@@ -1,7 +1,9 @@
 package cda
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"strings"
 
@@ -121,4 +123,22 @@ func GetCdaCoursesWithDetails(htmlContent string) (courses []Course) {
 		// fmt.Println(title)
 	})
 	return courses
+}
+
+// WriteCourseListFile 将课程列表信息写入json文件
+func WriteCourseListFile(courses []Course) error {
+	data, _ := json.MarshalIndent(courses, "", " ")
+	if err := ioutil.WriteFile("courses.json", data, 0644); err != nil {
+		return err
+	}
+	return nil
+}
+
+// ReadCourseListFile 从json文件中读取课程列表信息
+func ReadCourseListFile(path string) []byte{
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("读取文件失败")
+	}
+	return data
 }
