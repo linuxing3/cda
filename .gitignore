@@ -4,6 +4,7 @@
 *.leveldb
 debug.test
 vpsman.json
+courses.json
 gospider
 gospider.exe
 .log/
