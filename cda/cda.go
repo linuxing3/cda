@@ -7,7 +7,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/chromedp/chromedp"
-	"github.com/linuxing3/cda/config"
+	"github.com/linuxing3/gospider/config"
 	"github.com/spf13/viper"
 )
 
@@ -60,6 +60,7 @@ func FetchCdaCourseList() chromedp.Tasks {
 		chromedp.WaitVisible(CdaCourseRow, chromedp.NodeVisible),
 		// FIXED 可以抓取某一课程下面全部子课程的整个页面
 		chromedp.OuterHTML(config.DocBodySelector, &htmlContent, chromedp.ByJSPath),
+		chromedp.Stop(),
 	}
 }
 

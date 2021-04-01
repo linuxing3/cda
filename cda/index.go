@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
-	"github.com/linuxing3/cda/config"
+	"github.com/linuxing3/gospider/config"
 )
 
 var htmlContent string
