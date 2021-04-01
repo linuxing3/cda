@@ -1,0 +1,8 @@
+*.exe
+*.db
+*.sqlite
+*.leveldb
+vpsman.json
+gospider
+gospider.exe
+.log/
