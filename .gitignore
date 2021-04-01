@@ -2,6 +2,7 @@
 *.db
 *.sqlite
 *.leveldb
+debug.test
 vpsman.json
 gospider
 gospider.exe

@@ -16,7 +16,6 @@ import (
 
 var htmlContent string
 
-
 func StartCrawlCda() {
 
 	c := config.InitChromedpOptions(true)
@@ -35,21 +34,21 @@ func StartCrawlCda() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// fmt.Println(htmlContent)
+	fmt.Println("获取课程具体信息")
 	courses := GetCdaCoursesWithDetails(htmlContent)
 
-	file, _ := json.MarshalIndent(courses, "", " ")
-	_ = ioutil.WriteFile("courses.json", file, 0644)
+	data, _ := json.MarshalIndent(courses, "", " ")
+	if err = ioutil.WriteFile("courses.json", data, 0644); err != nil {
+		fmt.Println(err)
+	}
 
-	// err = chromedp.Run(timeoutCtx, 
-	// 	loginCda(CdaBaseURL),
-	// 	chromedp.Navigate(testLink),
-	// 	chromedp.Click(btn, chromedp.NodeVisible),
-	// 	chromedp.WaitVisible("video", chromedp.NodeVisible),
-	// 	chromedp.Click(confirm, chromedp.NodeVisible),
-	// )
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
 }
 
+// PrintCourseListFile 读取课程列表文件
+func PrintCourseListFile(path string) {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("读取文件失败")
+	}
+	fmt.Println(string(data))
+}
