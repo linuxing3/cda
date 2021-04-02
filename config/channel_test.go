@@ -114,39 +114,3 @@ func TestSendString(t *testing.T) {
 		})
 	}
 }
-
-// TODO: 无法测试多重通道的异步
-func TestTransformStringToStringArray(t *testing.T) {
-	type args struct {
-		worklist    chan []string
-		unseenLinks chan string
-	}
-
-	workList := make(chan []string)
-
-	unseenList := make(chan string)
-	unseenList <- "link3"
-
-
-	tests := []struct {
-		name string
-		args args
-	}{
-		{
-			name: "将字符串改成字符串数组",
-			args: args{
-				worklist: workList,
-				unseenLinks: unseenList,
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			go TransformStringToStringArray(tt.args.worklist, tt.args.unseenLinks)
-			// after transformation
-			link3 := <- workList
-
-			reflect.DeepEqual(link3, []string{"link3"})
-		})
-	}
-}

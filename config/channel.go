@@ -2,7 +2,10 @@ package channel
 
 import (
 	"fmt"
+	"sync"
 )
+
+var wg sync.WaitGroup
 
 // Crawl 抓取一个字符串, 改成一个数组
 func Crawl(url string) []string {
@@ -22,7 +25,6 @@ func Crawl(url string) []string {
 // TransformStringToStringArray 抓取unseenLink, 从字符串改成一个数组, 写入worklist通道
 func TransformStringToStringArray(worklist chan []string, unseenLinks chan string) {
 	for link := range unseenLinks {
-		// foundLinks := Crawl(link)
 		foundLinks := []string{ link }
 		go func() { worklist <- foundLinks }()
 	}
@@ -41,7 +43,7 @@ func ClassifyItems(worklist chan []string, unseenLinks chan string) {
 	}
 }
 
-func CrawlWithChannel(url string) (chan []string, chan string) {
+func CrawlWithChannel(url string) {
 	worklist := make(chan []string)  // URLs,可能有重复
 	unseenLinks := make(chan string) // 去重 URLs
 
@@ -51,19 +53,22 @@ func CrawlWithChannel(url string) (chan []string, chan string) {
 
 	// 协程2: 5个爬虫
 	for i := 0; i < 5; i++ {
+		wg.Add(1)
 		go TransformStringToStringArray(worklist, unseenLinks)
 	}
 
 	// 协程3: 完成去重
 	ClassifyItems(worklist, unseenLinks)
 
-	return worklist, unseenLinks
+	wg.Wait()
 }
 
 func SendInt(c chan int, v int) {
+	defer wg.Done()
 	c <- v
 }
 
 func SendString(c chan string, s string) {
+	defer wg.Done()
 	c <- s
 }
