@@ -35,6 +35,6 @@ func StartCrawlCda() {
 	fmt.Println("获取课程具体信息")
 	courses := GetCdaCoursesWithDetails(htmlContent)
 
-	WriteCourseListFile(courses)
+	WriteCourseListFile(courses, "courses.json")
 
 }

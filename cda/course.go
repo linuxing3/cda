@@ -126,17 +126,17 @@ func GetCdaCoursesWithDetails(htmlContent string) (courses []Course) {
 }
 
 // WriteCourseListFile 将课程列表信息写入json文件
-func WriteCourseListFile(courses []Course) error {
+func WriteCourseListFile(courses []Course, filename string) error {
 	data, _ := json.MarshalIndent(courses, "", " ")
-	if err := ioutil.WriteFile("courses.json", data, 0644); err != nil {
+	if err := ioutil.WriteFile(filename, data, 0644); err != nil {
 		return err
 	}
 	return nil
 }
 
 // ReadCourseListFile 从json文件中读取课程列表信息
-func ReadCourseListFile(path string) []byte{
-	data, err := ioutil.ReadFile(path)
+func ReadCourseListFile(filename string) []byte{
+	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("读取文件失败")
 	}
