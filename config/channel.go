@@ -49,3 +49,11 @@ func Crawl(url string) []string {
     <-tokens // release the token
     return list
 }
+
+func SendInt(c chan int, v int)  {
+	c <- v
+}
+
+func SendString(c chan string, s string)  {
+	c <- s
+}

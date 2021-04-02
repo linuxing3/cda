@@ -33,39 +33,55 @@ func Test_Crawl(t *testing.T) {
 	}
 }
 
-func TestCrawlWithChannel(t *testing.T) {
+func TestSendInt(t *testing.T) {
 	type args struct {
-		url string
+		c chan int
 	}
-
-	want := make(chan []string)
-	data := []string{"localhost"}
-	want <- data
-
-	want1 := make(chan string)
-	want1 <- "localhost"
-
+	values := make(chan int)
 	tests := []struct {
-		name  string
-		args  args
-		want  chan []string
-		want1 chan string
+		name string
+		args args
+		want int
 	}{
 		{
-			name: "channel",
-			args: args{ url: "localhost"},
-			want: want,
-			want1: want1,
+			name: "value",
+			args: args{values},
+			want: 1,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := CrawlWithChannel(tt.args.url)
+			go SendInt(tt.args.c, 1)
+			got := <-values
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("CrawlWithChannel() got = %v, want %v", got, tt.want)
+				t.Errorf("SendValues() got = %v, want %v", got, tt.want)
 			}
-			if !reflect.DeepEqual(got1, tt.want1) {
-				t.Errorf("CrawlWithChannel() got1 = %v, want %v", got1, tt.want1)
+		})
+	}
+}
+
+func TestSendString(t *testing.T) {
+	type args struct {
+		c chan string
+	}
+	value := make(chan string)
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "send string",
+			args: args{value},
+			want: "go",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			go SendString(tt.args.c, "go")
+			got := <-value
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Got %v, but want %v", got, tt.want)
 			}
 		})
 	}
